@@ -5,11 +5,19 @@ import authRoutes from "./routes/authRoutes.js";
 import animeRoutes from "./routes/animeRoutes.js";
 import listRoutes from "./routes/listRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
 
 connectDB();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 
