@@ -11,10 +11,15 @@ export const create = asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, data: anime });
 });
 
-export const getAll = asyncHandler(async (req, res) => {
-  const anime = await getAllAnime();
-  res.status(200).json({ success: true, data: anime });
-});
+// export const getAll = asyncHandler(async (req, res) => {
+//   const anime = await getAllAnime();
+//   res.status(200).json({ success: true, data: anime });
+// });
+
+export const getAll = async (req, res) => {
+  const result = await getAllAnime(req.query);
+  res.json({ success: true, ...result });
+};
 
 export const getOne = asyncHandler(async (req, res) => {
   const anime = await getAnimeById(req.params.id);

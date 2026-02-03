@@ -54,4 +54,8 @@ const animeSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+animeSchema.index({ title: "text" });
+animeSchema.index({ genres: 1 });
+animeSchema.index({ averageRating: -1 });
+
 export default mongoose.model("Anime", animeSchema);
