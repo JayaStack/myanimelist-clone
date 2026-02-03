@@ -7,7 +7,6 @@ const animeSchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
-      index: true,
     },
     description: {
       type: String,
@@ -21,7 +20,6 @@ const animeSchema = new mongoose.Schema(
     genres: [
       {
         type: String,
-        index: true,
       },
     ],
     studio: {
@@ -36,11 +34,9 @@ const animeSchema = new mongoose.Schema(
       type: String,
       enum: ["Airing", "Completed", "Upcoming"],
       default: "Upcoming",
-      index: true,
     },
     releaseYear: {
       type: Number,
-      index: true,
     },
     averageRating: {
       type: Number,
@@ -54,8 +50,11 @@ const animeSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-animeSchema.index({ title: "text" });
-animeSchema.index({ genres: 1 });
-animeSchema.index({ averageRating: -1 });
+// Indexes (all in one place)
+animeSchema.index({ title: "text" }); // search
+animeSchema.index({ genres: 1 }); // filter
+animeSchema.index({ status: 1 }); // filter
+animeSchema.index({ releaseYear: 1 }); // filter
+animeSchema.index({ averageRating: -1 }); // sort
 
 export default mongoose.model("Anime", animeSchema);
