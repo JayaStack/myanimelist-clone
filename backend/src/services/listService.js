@@ -1,13 +1,27 @@
 import UserAnimeList from "../models/UserAnimeList.js";
 import ApiError from "../utils/ApiError.js";
 
-export const addToList = async (userId, data) => {
-  const entry = await UserAnimeList.create({
+export const addToList = async (userId, animeId, status = "Watching") => {
+  if (!animeId) {
+    throw new ApiError(400, "Anime ID missing");
+  }
+
+  const existing = await UserAnimeList.findOne({
     user: userId,
-    anime: data.animeId,
-    status: data.status,
+    anime: animeId,
   });
-  return entry;
+
+  if (existing) {
+    return existing; // prevent duplicates
+  }
+
+  const item = await UserAnimeList.create({
+    user: userId,
+    anime: animeId,
+    status,
+  });
+
+  return item;
 };
 
 export const getMyList = async (userId) => {

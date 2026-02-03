@@ -7,8 +7,14 @@ import {
 import asyncHandler from "../utils/asyncHandler.js";
 
 export const add = asyncHandler(async (req, res) => {
-  const item = await addToList(req.user.id, req.body);
-  res.status(201).json({ success: true, data: item });
+  const { anime, status } = req.body;
+
+  const item = await addToList(req.user.id, anime, status);
+
+  res.status(201).json({
+    success: true,
+    data: item,
+  });
 });
 
 export const myList = asyncHandler(async (req, res) => {
