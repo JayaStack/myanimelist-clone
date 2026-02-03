@@ -25,12 +25,21 @@ function App() {
       <h1>MyAnimeList</h1>
       <p>Welcome, {user.username}</p>
 
-      {anime.map((a) => (
-        <div key={a._id} style={{ marginBottom: 10 }}>
-          <h3>{a.title}</h3>
-          <small>Rating: {a.averageRating}</small>
-        </div>
-      ))}
+      <Routes>
+        <Route
+          path="/"
+          element={anime.map((a) => (
+            <div key={a._id}>
+              <Link to={`/anime/${a._id}`}>
+                <h3>{a.title}</h3>
+              </Link>
+              <small>Rating: {a.averageRating}</small>
+            </div>
+          ))}
+        />
+
+        <Route path="/anime/:id" element={<AnimeDetails />} />
+      </Routes>
     </div>
   );
 }
