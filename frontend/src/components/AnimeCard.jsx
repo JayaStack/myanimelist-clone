@@ -9,10 +9,15 @@ function AnimeCard({ anime }) {
           background: "#2b2b2b",
           padding: 10,
           borderRadius: 8,
+          transition: "0.2s",
+          cursor: "pointer",
         }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
       >
         <img
           src={anime.coverImage || "https://picsum.photos/200/300"}
+          alt={anime.title}
           style={{
             width: "100%",
             height: 280,
@@ -21,9 +26,7 @@ function AnimeCard({ anime }) {
           }}
         />
 
-        <Link to={`/anime/${anime._id}`}>
-          <h3 style={{ color: "#4f6cff" }}>{anime.title}</h3>
-        </Link>
+        <h3 style={{ color: "#4f6cff" }}>{anime.title}</h3>
         <p>⭐ {anime.averageRating}</p>
         <small>{anime.episodes} eps</small>
       </div>

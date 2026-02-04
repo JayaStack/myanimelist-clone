@@ -38,8 +38,12 @@ function App() {
     }
   }, [user]);
 
+  // Auth loading
   if (loading) return <p>Loading...</p>;
   if (!user) return <Login />;
+
+  // Anime loading (your requested addition)
+  if (anime.length === 0) return <p>Loading anime...</p>;
 
   return (
     <div style={{ padding: 20 }}>
@@ -56,7 +60,7 @@ function App() {
           path="/"
           element={
             <>
-              {/* Trending */}
+              {/* Trending Section */}
               <h2>🔥 Trending Anime</h2>
               <div
                 style={{
@@ -93,7 +97,7 @@ function App() {
                 </select>
               </div>
 
-              {/* Anime List */}
+              {/* Anime Grid */}
               <div
                 style={{
                   display: "grid",

@@ -14,7 +14,6 @@ function MyList() {
     try {
       const res = await api.put(`/lists/${id}`, data);
 
-      // update local state so UI reflects change
       setList((prev) =>
         prev.map((item) => (item._id === id ? res.data.data : item)),
       );
@@ -32,11 +31,14 @@ function MyList() {
     }
   };
 
+  // ✅ Empty state early return
+  if (list.length === 0) {
+    return <p style={{ opacity: 0.7, padding: 20 }}>Your list is empty 📭</p>;
+  }
+
   return (
     <div style={{ padding: 20 }}>
       <h1>My Anime List</h1>
-
-      {list.length === 0 && <p>Your list is empty</p>}
 
       {list.map((item) => (
         <div key={item._id} style={{ marginBottom: 15 }}>
