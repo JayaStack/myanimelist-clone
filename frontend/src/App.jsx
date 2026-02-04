@@ -5,14 +5,17 @@ import Login from "./pages/Login";
 import { Routes, Route, Link } from "react-router-dom";
 import AnimeDetails from "./pages/AnimeDetails";
 import MyList from "./pages/MyList";
+import AnimeCard from "./components/AnimeCard";
 
 function App() {
   const [anime, setAnime] = useState([]);
+  const [trending, setTrending] = useState([]);
   const [search, setSearch] = useState("");
   const [genre, setGenre] = useState("");
 
   const { user, loading } = useContext(AuthContext);
 
+  // Fetch filtered anime
   useEffect(() => {
     if (user) {
       api
@@ -25,6 +28,15 @@ function App() {
         });
     }
   }, [user, search, genre]);
+
+  // Fetch trending once after login
+  useEffect(() => {
+    if (user) {
+      api.get("/anime/trending").then((res) => {
+        setTrending(res.data.data);
+      });
+    }
+  }, [user]);
 
   if (loading) return <p>Loading...</p>;
   if (!user) return <Login />;
@@ -39,12 +51,29 @@ function App() {
         <Link to="/">Home</Link> | <Link to="/my-list">My List</Link>
       </nav>
 
-      {/* Filters only on Home */}
       <Routes>
         <Route
           path="/"
           element={
             <>
+              {/* Trending */}
+              <h2>🔥 Trending Anime</h2>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                  gap: 20,
+                  marginBottom: 30,
+                }}
+              >
+                {trending.map((a) => (
+                  <AnimeCard key={a._id} anime={a} />
+                ))}
+              </div>
+
+              <hr style={{ margin: "20px 0" }} />
+
+              {/* Filters */}
               <div style={{ marginBottom: 20 }}>
                 <input
                   placeholder="Search anime..."
@@ -64,14 +93,18 @@ function App() {
                 </select>
               </div>
 
-              {anime.map((a) => (
-                <div key={a._id}>
-                  <Link to={`/anime/${a._id}`}>
-                    <h3>{a.title}</h3>
-                  </Link>
-                  <small>Rating: {a.averageRating}</small>
-                </div>
-              ))}
+              {/* Anime List */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                  gap: 20,
+                }}
+              >
+                {anime.map((a) => (
+                  <AnimeCard key={a._id} anime={a} />
+                ))}
+              </div>
             </>
           }
         />

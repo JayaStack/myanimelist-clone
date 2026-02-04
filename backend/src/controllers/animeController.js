@@ -3,6 +3,7 @@ import {
   getAllAnime,
   getAnimeById,
   deleteAnime,
+  getTrendingAnime,
 } from "../services/animeService.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
@@ -29,4 +30,9 @@ export const getOne = asyncHandler(async (req, res) => {
 export const remove = asyncHandler(async (req, res) => {
   await deleteAnime(req.params.id);
   res.status(200).json({ success: true, message: "Anime deleted" });
+});
+
+export const trending = asyncHandler(async (req, res) => {
+  const anime = await getTrendingAnime();
+  res.json({ success: true, data: anime });
 });

@@ -69,3 +69,11 @@ export const deleteAnime = async (id) => {
   if (!anime) throw new ApiError(404, "Anime not found");
   await anime.deleteOne();
 };
+
+export const getTrendingAnime = async () => {
+  const anime = await Anime.find()
+    .sort({ ratingCount: -1, averageRating: -1 })
+    .limit(10);
+
+  return anime;
+};
